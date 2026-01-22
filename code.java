@@ -1,81 +1,56 @@
 import java.util.Scanner;
 
-public class code {
+public class code{
     public static void main(String[] args) {
+        // creating 3 scanner objects to take input from user (like total classes, attended classes and total semester classes)
         Scanner a = new Scanner(System.in);
         Scanner b = new Scanner(System.in);
         Scanner c = new Scanner(System.in);
         System.out.print("Enter total number of classes held: ");
-        int totalClasses = a.nextInt();
-        System.out.print("Enter number of classes attended: ");
-        int attendedClasses = b.nextInt();
-        System.out.print("Enter total number of classes for the semester(input 0 if you dont know): ");
-        int totalSemesterClasses = c.nextInt();
-        int extra = 1;
+        int totalClasses = a.nextInt(); // total classes held
+        System.out.println("Enter number of classes you have attended: ");
+        int attendedClasses = b.nextInt(); // classes attended by student
+        System.out.print("Enter total number of classes in the semester(enter 0 if you don't know): ");
+        int totalSemesterClasses = c.nextInt(); // total classes in the semester
+        // this block is if you are allowed to sit in exam
         if(attendedClasses/totalClasses >= 0.75){
-            System.out.println("You are allowed to sit in the exams.");
-            Scanner d = new Scanner(System.in);
-            System.out.println("Do you want to calculate how many classes you can miss without getting debarred? Type(y/n)");
-            String response = d.nextLine();
-            if(response.equals("y")){
-                if(totalSemesterClasses == 0){
-                    for(extra = 1; ; extra++){
-                        if((attendedClasses)/(totalClasses + extra) < 0.75){
-                            break;
-                        }
-                    }
-                    System.out.println("Since you don't Know the total number of classes for the semester, you can skip " + extra + " classes.");
+            System.out.print("You are allowed to sit in the exam.");
+            // this block is to calculate how many classes you can skip
+            if(totalSemesterClasses != 0){
+                double skip = 1;
+                if(attendedClasses/totalSemesterClasses >= 0.75){
+                    System.out.println("you can skip all remaining classes.");
                 }
-                else{
-                    if(totalClasses != attendedClasses && attendedClasses/totalSemesterClasses < 0.75){
-                        for(extra = 1; totalClasses + extra <= totalSemesterClasses; extra++){
-                            if((attendedClasses)/(totalClasses + extra) < 0.75){
-                                break;
-                            }
-                        }
-                        System.out.println("You can skip " + (extra - 1) + " classes without getting debarred.");
-                    }
-                    else{
-                        System.out.println("You can skip all remaining classes without getting debarred.");
+                if(attendedClasses/totalSemesterClasses <0.75){
+                    while((attendedClasses + skip)/(totalSemesterClasses) < 0.75){
+                        skip++;
                     }
                 }
+                System.out.println("You can skip " + Integer.valueOf((int)(skip-1)) + " classes and still be allowed to sit in the exam.");
             }
-            else{
-                System.out.println("Have a nice day!");
+            if(totalSemesterClasses == 0){
+                double days = 1;
+                while((attendedClasses)/(totalClasses + days) < 0.75){
+                    days++;
+                }
+                System.out.println("You cannot skip more than "+ Integer.valueOf((int)(days-1)) + " classes consecutively or you will be disallowed to sit in the exam.");
             }
         }
-        else{
-            System.out.println("You are not allowed to sit in the exams.");
-            Scanner e = new Scanner(System.in);
-            System.out.println("Do you want to calculate how many classes you need to attend to be allowed to sit in the exams? Type(y/n)");
-            String response2 = e.nextLine();
-            if(response2.equals("y")){
-                int needToAttend = 0;
-                if(totalSemesterClasses == 0){
-                    for (needToAttend = 1; ; needToAttend++) {
-                        if ((attendedClasses + needToAttend) / (totalClasses + needToAttend) >= 0.75) {
-                            break;
-                        }
-                    }
-                    System.out.println("Since you don't know the total number of classes for the semester, hypothetically you have to attend " + needToAttend + " more classes to get above 75% attendance and be allowed to sit in the exams.");
-                }
-                else{
-                    for (needToAttend = 1; totalClasses + needToAttend <= totalSemesterClasses; needToAttend++) {
-                        if ((attendedClasses + needToAttend) / (totalClasses + needToAttend) >= 0.75) {
-                            break;
-                        }
-                    }
-                    if(totalClasses + needToAttend > totalSemesterClasses){
-                        System.out.println("Even if you attend all remaining classes, you will not be able to reach 75% attendance.");
-                    }
-                    else{
-                        System.out.println("You need to attend " + needToAttend + " more classes to be allowed to sit in the exams.");
-                    }
-                }
+        if(attendedClasses/totalClasses < 0.75){
+            System.out.print("You are not allowed to sit in the exam.");
+            if(totalSemesterClasses != 0){
+                double per = totalSemesterClasses / 0.75;
+                double need = per - totalClasses;
+                System.out.println("You need to attend " + Integer.valueOf((int)(need)) + " more classes to be allowed to sit in the exam.");
             }
-            else{
-                System.out.println("Have a nice day!");
+            if(totalSemesterClasses == 0){
+                double skipp = 1;
+                while((attendedClasses+ skipp)/(totalClasses + skipp) < 0.75){
+                    skipp++;
+                }
+                System.out.println("You need to attend " + Integer.valueOf((int)(skipp)) + " consecutive classes to be go overr 75% attendance");
             }
         }
+
     }
 }
