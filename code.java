@@ -16,7 +16,7 @@ public class code {
 
         double currentPercentage = (attendedClasses * 100.0) / totalClasses;
 
-        // CHECK IF ALLOWED
+        
         if (currentPercentage >= 75) {
             System.out.println("You are allowed to sit in the exam.");
 
